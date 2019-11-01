@@ -1,0 +1,32 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Notes</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.rawgit.com/xcatliu/simplemde-theme-dark/master/dist/simplemde-theme-dark.min.css">
+</head>
+
+<body>
+  <div id="wrapper">
+    <section id="notes">
+      <div id="header">
+        <input id="search" type="search" placeholder="Search" />
+        <input type="button" id="create-note" value="Create Note" />
+      </div>
+      <ul id="notes-list">
+      </ul>
+    </section>
+
+    <div id="note">
+      <textarea id="note"></textarea>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pouchdb@7.1.1/dist/pouchdb.min.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>

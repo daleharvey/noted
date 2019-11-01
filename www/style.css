@@ -1,0 +1,88 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: #292929;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+  color: #999;
+}
+
+#wrapper {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 250px auto
+}
+
+#note {
+  height: 100%;
+  overflow: scroll;
+  background: #2d2d2d;
+}
+
+#notes {
+  border-right: 1px solid black;
+}
+
+#notes ul {
+  list-style-type: none;
+}
+
+#notes a {
+  display: block;
+  cursor: pointer;
+  color: white;
+  font-size: .85rem;
+  padding: 15px;
+  border-bottom: 1px solid black;
+}
+
+#notes a:hover {
+  background-color: rgba(255, 255, 255, .1)
+}
+
+[type=search] {
+  background: #1f1f1f;
+  font-size: .85rem;
+  border: 0px solid #666;
+  border-radius: 15px;
+  color: #CCC;
+  margin: 5px 10px;
+  padding: 5px;
+  text-indent: 5px;
+  flex-grow: 1;
+}
+
+#create-note {
+  display: block;
+  cursor: pointer;
+  width: .75em;
+  height: .75em;
+  background: url(create.svg) no-repeat;
+  background-size: 100%;
+  opacity: .7;
+  text-indent: -9999em;
+  border: 0;
+  color: #CCC;
+  font-size: 2em;
+  margin-right: 10px;
+}
+
+#create-note:hover {
+   opacity: .8;
+}
+
+#header {
+  display: flex;
+  align-items: center;
+}
+
+.CodeMirror {
+  background: #2d2d2d !important;
+  border: 0 !important;
+}
