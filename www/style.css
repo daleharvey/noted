@@ -23,6 +23,7 @@ body {
   height: 100%;
   overflow: scroll;
   background: #2d2d2d;
+  margin-bottom: 2em;
 }
 
 #notes {
@@ -42,6 +43,7 @@ body {
   border-bottom: 1px solid black;
 }
 
+#notes a.selected,
 #notes a:hover {
   background-color: rgba(255, 255, 255, .1)
 }
@@ -80,6 +82,28 @@ body {
 #header {
   display: flex;
   align-items: center;
+}
+
+#delete-note {
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
+  display: block;
+  cursor: pointer;
+  width: .75em;
+  height: .75em;
+  background: url(delete.svg) no-repeat;
+  background-size: 100%;
+  opacity: .6;
+  text-indent: -9999em;
+  border: 0;
+  color: #CCC;
+  font-size: 2em;
+  margin-right: 10px;
+}
+
+#delete-note:hover {
+  opacity: .8;
 }
 
 .CodeMirror {
