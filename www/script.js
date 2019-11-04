@@ -16,14 +16,15 @@ let currentNote;
 (async function() {
   await initUI();
   await hashChanged();
-  //await drawNotes();
 })();
 
 async function selectNote(note) {
   editor.codemirror.off("change", changeEvent);
   currentNote = note;
   editor.value(note.note);
+  editor.codemirror.focus();
   editor.codemirror.on("change", changeEvent);
+  document.body.classList.remove("shownotes")
 }
 
 async function createNote() {
@@ -39,6 +40,10 @@ async function deleteNote() {
   await db.remove(currentNote._id, currentNote._rev);
   currentNote = null;
   document.location = '#';
+}
+
+async function toggleNotes() {
+  document.body.classList.toggle("shownotes")
 }
 
 async function hashChanged() {
@@ -104,6 +109,8 @@ async function drawNotes() {
 async function initUI() {
   $("#create-note").addEventListener("click", createNote);
   $("#delete-note").addEventListener("click", deleteNote);
+  $("#show-notes").addEventListener("click", toggleNotes);
+  $("#cover").addEventListener("click", toggleNotes);
 
   window.addEventListener('hashchange', hashChanged, false);
 

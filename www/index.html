@@ -10,6 +10,7 @@
 
 <body>
   <div id="wrapper">
+
     <section id="notes">
       <div id="header">
         <input id="search" type="search" placeholder="Search" />
@@ -20,9 +21,15 @@
     </section>
 
     <div id="note">
-      <textarea id="note"></textarea>
-      <input type="button" id="delete-note" value="Delete Note" />
+      <textarea></textarea>
+      <footer>
+        <input type="button" class="btn" id="show-notes" value="Show Notes" />
+        <input type="button" id="delete-note" value="Delete Note" />
+      </footer>
     </div>
+
+    <div id="cover"></div>
+
   </div>
 
   <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
