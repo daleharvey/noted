@@ -1,6 +1,7 @@
 * {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
 }
 
 html, body {
@@ -37,6 +38,10 @@ body {
   }
 }
 
+@media screen and (min-width: 500px) {
+  #show-notes { display: none; }
+}
+
 #cover {
   display: none;
   position: fixed;
@@ -69,10 +74,12 @@ body {
   position: fixed;
   width: 100%;
   bottom: 0;
-  background: black;
+  background: rgba(0, 0, 0, .2);
   height: 3em;
   display: flex;
   align-items: center;
+  padding: 0 1em;
+  justify-content: space-between;
 }
 
 #notes ul {
@@ -166,7 +173,6 @@ body {
 
 #show-notes {
   background-image: url(home.svg);
-  margin: 0 .5em;
 }
 
 #delete-note:hover {
