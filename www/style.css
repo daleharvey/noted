@@ -66,6 +66,8 @@ body {
 
 #notes {
   border-right: 1px solid black;
+  display: flex;
+  flex-direction: column;
   height: 100%;
 }
 
@@ -86,15 +88,26 @@ body {
   list-style-type: none;
 }
 
-#notes a {
+#sign-in {
+  cursor: pointer;
+  display: block;
+  padding: .5em;
+  color: white;
+  font-size: .85rem;
+}
+
+#notes ul a {
   display: block;
   cursor: pointer;
   color: white;
-  font-size: .85rem;
   padding: 15px;
   border-bottom: 1px solid black;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+#notes-list {
+  flex-grow: 2;
 }
 
 #notes a.selected,
@@ -177,6 +190,64 @@ body {
 
 #delete-note:hover {
   opacity: .8;
+}
+
+dialog {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, .9);
+  z-index: 200;
+  width: 100%;
+  color: white;
+}
+
+
+dialog form {
+  max-width: 300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+dialog p {
+  margin: 2em 1em;
+}
+
+fieldset {
+  border: 0;
+  display: flex;
+  margin-top: 1em;
+}
+
+fieldset input {
+  flex-grow: 2;
+  background: black;
+  padding: 1em;
+  font-size: 1em;
+  border: 0;
+  color: white;
+}
+
+fieldset input#cancel-btn {
+  background: #222;
+}
+fieldset input#sign-in-btn {
+  background: green;
+}
+
+#email {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid grey;
+  padding: .5em;
+  color: grey;
+  font-size: 1em;
 }
 
 .CodeMirror {

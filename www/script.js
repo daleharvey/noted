@@ -36,7 +36,15 @@ async function createNote() {
   document.location = "#" + result.id;
 }
 
+async function signIn() {
+  $("#sign-in-dialog").style.display = "none";
+  alert("Go check your email");
+}
+
 async function deleteNote() {
+  if (!confirm("Are you sure you want to delete?")) {
+    return;
+  }
   await db.remove(currentNote._id, currentNote._rev);
   currentNote = null;
   document.location = '#';
@@ -106,11 +114,24 @@ async function drawNotes() {
   $("#notes-list").innerHTML = titles.join("");
 }
 
+function showDialog(id) {
+  return function() {
+    $(id).style.display = "block";
+    $("#cancel-btn").addEventListener("click", hide(id));
+    $("#sign-in-form").addEventListener("submit", signIn);
+  }
+}
+function hide(id) {
+  return function() { $(id).style.display = "none"; }
+}
+
 async function initUI() {
   $("#create-note").addEventListener("click", createNote);
   $("#delete-note").addEventListener("click", deleteNote);
   $("#show-notes").addEventListener("click", toggleNotes);
   $("#cover").addEventListener("click", toggleNotes);
+  $("#sign-in").addEventListener("click",
+    showDialog("#sign-in-dialog"));
 
   window.addEventListener('hashchange', hashChanged, false);
 

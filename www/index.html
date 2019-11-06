@@ -19,6 +19,10 @@
       </div>
       <ul id="notes-list">
       </ul>
+
+      <footer>
+        <a id="sign-in">Sign in to Sync</a>
+      </footer>
     </section>
 
     <div id="note">
@@ -36,6 +40,23 @@
   <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/pouchdb@7.1.1/dist/pouchdb.min.js"></script>
   <script src="script.js"></script>
+
+  <dialog id="sign-in-dialog">
+    <form id="sign-in-form">
+      <p>
+        If you want to sync these notes across devices,
+        please enter your email:
+      </p>
+      <div>
+        <input type="email" id="email"
+          placeholder="Enter email address" />
+      </div>
+      <fieldset>
+        <input type="button" value="Cancel" id="cancel-btn" />
+        <input type="submit" value="Sign In"  id="sign-in-btn"/>
+      </fieldset>
+    </form>
+  </dialog>
 
 </body>
 </html>
