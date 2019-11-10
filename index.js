@@ -17,12 +17,12 @@ PouchDB.plugin(require('pouchdb-find'));
 const nanoid = require('nanoid');
 const nodemailer = require('nodemailer');
 
-const app = express();
-const tokens = new PouchDB("tokens");
-
 if (!fs.existsSync(DB_DIR)){
   fs.mkdirSync(DB_DIR);
 }
+
+const app = express();
+const tokens = new PouchDB("tokens");
 
 tokens.createIndex({
   index: {fields: ["token"]}
