@@ -88,7 +88,7 @@ body {
   list-style-type: none;
 }
 
-#sign-in {
+#notes footer {
   cursor: pointer;
   display: block;
   padding: .5em;
@@ -104,6 +104,7 @@ body {
   border-bottom: 1px solid black;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #notes-list {
@@ -193,7 +194,9 @@ body {
 }
 
 dialog {
+  display: none;
   position: fixed;
+  border: 0;
   top: 0;
   bottom: 0;
   left: 0;
@@ -248,6 +251,17 @@ fieldset input#sign-in-btn {
   padding: .5em;
   color: grey;
   font-size: 1em;
+}
+
+#user #logged-in {
+  display: none;
+}
+
+#user.logged-in #logged-in {
+  display: block;
+}
+#user.logged-in #sign-in {
+  display: none;
 }
 
 .CodeMirror {
