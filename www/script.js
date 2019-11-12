@@ -3,7 +3,7 @@
 const $ = document.querySelector.bind(document);
 const changeEvent = debounce(editorChanged, 500);
 
-const editor = new SimpleMDE({
+const editor = new EasyMDE({
   autoDownloadFontAwesome: false,
   toolbar: false,
   status: false,
