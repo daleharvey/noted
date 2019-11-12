@@ -1,7 +1,7 @@
 "use script";
 
 const $ = document.querySelector.bind(document);
-const db = new PouchDB("notes");
+const changeEvent = debounce(editorChanged, 500);
 
 const editor = new SimpleMDE({
   autoDownloadFontAwesome: false,
@@ -10,14 +10,18 @@ const editor = new SimpleMDE({
   element: $("#note textarea")
 });
 
-const changeEvent = debounce(editorChanged, 500);
-
+let db = null;
 let user = null;
 let currentNote = null;
 
 (async function() {
 
+  await initDB();
   await loadUser();
+
+  if (user) {
+    await initSync(user);
+  }
 
   const params = new URLSearchParams(window.location.search);
   if (params.has("token")) {
@@ -28,16 +32,21 @@ let currentNote = null;
   await initUI();
   await hashChanged();
 
-  if (user) {
-    await initSync(user);
-  }
 })();
 
 async function loadUser() {
   try {
     user = await db.get("_local/user");
-    console.log(user);
   } catch(e) {}
+}
+
+async function initDB() {
+  db = new PouchDB("notes");
+  db.changes({
+    since: 'now',
+    live: true,
+    include_docs: true
+  }).on("change", dbUpdated);
 }
 
 async function initSync(details) {
@@ -49,7 +58,16 @@ async function initSync(details) {
       opts.headers.set('X-Auth-Token', details.passphrase);
       return PouchDB.fetch(url, opts);
     }
-  })
+  });
+
+  // If the user hasnt made any changes, delete the
+  // initial blank note and sync to a fresh db.
+  let info = await db.info();
+  if (info.update_seq <= 1) {
+    await db.destroy();
+    await initDB();
+  }
+
   db.sync(remote, {live: true}).on("error", console.error);
 }
 
@@ -69,13 +87,10 @@ async function validate(token) {
   }
 }
 
-async function selectNote(note, focus = true) {
+async function selectNote(note) {
   editor.codemirror.off("change", changeEvent);
   currentNote = note;
   editor.value(note.note);
-  if (focus) {
-    editor.codemirror.focus();
-  }
   editor.codemirror.on("change", changeEvent);
   document.body.classList.remove("shownotes")
 }
@@ -97,8 +112,7 @@ async function signIn(e) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({email})
-  })
-  console.log(result);
+  });
   alert("Go check your email");
 }
 
@@ -156,7 +170,7 @@ async function drawNotes() {
     });
   }
 
-  if (!notes.length) {
+  if (!notes.length && search) {
     $("#notes-list").innerHTML = "Nothing matched the search";
     return;
   }
@@ -182,6 +196,7 @@ function showDialog(id) {
     $("#sign-in-form").addEventListener("submit", signIn);
   }
 }
+
 function hide(id) {
   return function() { $(id).style.display = "none"; }
 }
@@ -195,16 +210,10 @@ async function logout() {
 async function dbUpdated(change) {
   await drawNotes();
 
-  // Dont update if we are currently focused in the editor
-  // this stops us trying to update the UI based on local
-  // updates but we should come up with something more
-  // reliable.
-  if (document.activeElement &&
-      document.activeElement.nodeName === "TEXTAREA") {
-    return;
-  }
-
-  if (change.id === currentNote._id) {
+  // This is possible racey if you are type something
+  // between the change event firing and this being run.
+  if (currentNote && change.id === currentNote._id &&
+      change.doc.note !== editor.value()) {
     selectNote(change.doc, false);
   }
 }
