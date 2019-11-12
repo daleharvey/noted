@@ -133,7 +133,7 @@ body {
   cursor: pointer;
   width: .75em;
   height: .75em;
-  background: url(create.svg) no-repeat;
+  background: url(/img/create.svg) no-repeat;
   background-size: 100%;
   opacity: .7;
   text-indent: -9999em;
@@ -157,7 +157,7 @@ body {
   cursor: pointer;
   width: .75em;
   height: .75em;
-  background: url(delete.svg) no-repeat;
+  background: url(/img/delete.svg) no-repeat;
   background-size: 100%;
   opacity: .6;
   text-indent: -9999em;
@@ -186,7 +186,7 @@ body {
 }
 
 #show-notes {
-  background-image: url(home.svg);
+  background-image: url(/img/home.svg);
 }
 
 #delete-note:hover {

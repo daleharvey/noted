@@ -5,8 +5,13 @@
   <meta charset="utf-8">
   <title>Noted</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdn.rawgit.com/xcatliu/simplemde-theme-dark/master/dist/simplemde-theme-dark.min.css">
+
+  <link rel="manifest" href="/manifest.json">
+
+  <link rel="shortcut icon" type="image/png" href="/img/icon.png"/>
+
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/simplemde-theme-dark.min.css">
 </head>
 
 <body>
@@ -41,10 +46,15 @@
 
   </div>
 
-  <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
-  <!--<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>-->
-  <script src="//cdn.jsdelivr.net/npm/pouchdb@7.1.1/dist/pouchdb.min.js"></script>
-  <script src="script.js"></script>
+  <script src="/js/easymde.min.js"></script>
+  <script src="/js/pouchdb.min.js"></script>
+  <script src="/js/script.js"></script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js");
+    }
+  </script>
 
   <dialog id="sign-in-dialog">
     <form id="sign-in-form">

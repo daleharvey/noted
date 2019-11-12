@@ -1,0 +1,19 @@
+{
+  "short_name": "Noted",
+  "name": "Noted",
+  "icons": [
+    {
+      "src": "/img/icon.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#292929",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#FF622E",
+  "serviceworker": {
+    "src": "/js/service-worker.js"
+  }
+}
