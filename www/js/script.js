@@ -68,7 +68,15 @@ async function initSync(details) {
     await initDB();
   }
 
-  db.sync(remote, {live: true}).on("error", console.error);
+  db.sync(remote, {
+    live: true
+  }).on("error", error => {
+    console.error("Error Syncing", error);
+  }).on("paused", () => {
+    console.log("Syncing paused");
+  }).on("active", () => {
+    console.log("Syncing active");
+  });
 }
 
 async function validate(token) {
@@ -134,20 +142,18 @@ async function hashChanged() {
   try {
     let note = await db.get(id);
     selectNote(note);
-    drawNotes();
+    await drawNotes();
   } catch (e) { }
+
   if (!currentNote) {
     let notes = await db.allDocs({include_docs: true});
     if (notes.total_rows) {
+      notes.rows.sort((a, b) => b.doc.updated - a.doc.updated);
       document.location = "#" + notes.rows[0].id;
     } else {
       createNote();
     }
   }
-}
-
-async function searchChanged() {
-  drawNotes();
 }
 
 async function editorChanged() {
@@ -233,7 +239,7 @@ async function initUI() {
     .on("change", dbUpdated);
 
   $("#search")
-    .addEventListener("input", debounce(searchChanged, 500));
+    .addEventListener("input", debounce(drawNotes, 500));
 }
 
 function debounce(func, wait, immediate) {
