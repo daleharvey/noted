@@ -25,7 +25,7 @@ let writtenRevs = new Map();
   }
 
   const params = new URLSearchParams(window.location.search);
-  if (params.has("token")) {
+  if (!user && params.has("token")) {
     await validate(params.get("token"));
     return;
   }
@@ -78,9 +78,9 @@ async function initSync(details) {
   }).on("error", error => {
     console.error("Error Syncing", error);
   }).on("paused", () => {
-    console.log("Syncing paused");
+    log("Syncing paused");
   }).on("active", () => {
-    console.log("Syncing active");
+    log("Syncing active");
   });
 }
 

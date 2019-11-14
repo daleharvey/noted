@@ -49,6 +49,7 @@ async function sendEmail(to, url) {
 }
 
 async function signIn(email) {
+  console.log(`Signing in: ${email}`);
   let dbName = crypto.createHash('md5')
     .update(email).digest('hex');
   // Default document, if there is an existing one then
@@ -92,6 +93,7 @@ function denied(res, message = "Denied") {
 // here. This currently isnt doing anything important
 // but makes sure I can change the token format at least.
 app.post("/authenticate", async (req, res, next) => {
+  console.log(`Authenticating: ${req.body.token}`);
 
   let token = req.body.token;
   let result = await tokens.find({selector: {token}});
@@ -101,6 +103,10 @@ app.post("/authenticate", async (req, res, next) => {
   }
 
   let doc = result.docs[0];
+  console.log(doc);
+  doc.token = false;
+  await tokens.put(doc);
+
   res.json({
     ok: true,
     email: doc.email,
