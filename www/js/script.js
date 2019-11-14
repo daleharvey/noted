@@ -13,6 +13,7 @@ const editor = new EasyMDE({
 let db = null;
 let user = null;
 let currentNote = null;
+let writtenRevs = new Map();
 
 (async function() {
 
@@ -33,6 +34,10 @@ let currentNote = null;
   await hashChanged();
 
 })();
+
+async function log() {
+  console.log.apply(null, arguments);
+}
 
 async function loadUser() {
   try {
@@ -162,6 +167,7 @@ async function editorChanged() {
   currentNote.updated = Date.now();
   let update = await db.put(currentNote);
   currentNote._rev = update.rev;
+  writtenRevs.set(update.rev, true);
 }
 
 async function drawNotes() {
@@ -216,10 +222,17 @@ async function logout() {
 async function dbUpdated(change) {
   await drawNotes();
 
-  // This is possible racey if you are type something
-  // between the change event firing and this being run.
-  if (currentNote && change.id === currentNote._id &&
-      change.doc.note !== editor.value()) {
+  // Ignore any changes we made ourselves
+  // TODO: We should probably handle multiple changes here, also
+  // should be deleting the key from writtenRevs (memleak) but
+  // need to investigate why the change event is called twice
+  // for the same rev.
+  if (writtenRevs.has(change.doc._rev)) {
+    log(`Ignoring rev ${change.doc._rev}, we made the change`);
+    return;
+  }
+
+  if (currentNote && change.id === currentNote._id) {
     selectNote(change.doc, false);
   }
 }
