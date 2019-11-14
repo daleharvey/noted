@@ -14,7 +14,7 @@
 // Names of the two caches used in this version of the service worker.
 // Change to v2, etc. when you update any of the local resources, which will
 // in turn trigger the install event again.
-const PRECACHE = 'precache-v3';
+const PRECACHE = 'precache-v4';
 const RUNTIME = 'runtime';
 
 // A list of local resources we always want to be cached.
@@ -26,7 +26,8 @@ const PRECACHE_URLS = [
   '/img/create.svg',
   '/img/delete.svg',
   '/img/home.svg',
-  '/img/icon.png',
+  '/img/icon-192.png',
+  '/img/icon-512.png',
   '/js/easymde.min.js',
   '/js/pouchdb.min.js',
   '/js/script.js'
