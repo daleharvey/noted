@@ -45,7 +45,7 @@ async function sendEmail(to, url) {
     text: url
   });
 
-  console.log("Message sent: %s", info.messageId);
+  console.log(`Emailed: ${url} to ${to}, messageId=${info.messageId}`);
 }
 
 async function signIn(email) {
@@ -64,7 +64,7 @@ async function signIn(email) {
   } catch (e) { }
   // Create a new one time use token
   doc.token = nanoid();
-
+  console.log(`Created new token: ${doc.token}`);
   await tokens.put(doc);
   let url = `${process.env.HOST}/?token=${doc.token}`;
   await sendEmail(email, url);
