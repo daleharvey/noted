@@ -1,6 +1,6 @@
 "use strict";
 
-const DB_DIR = __dirname + "/data/";
+const DB_PATH = process.env.DB_PATH || __dirname + "/data/";
 const SECRET = process.env.SECRET || "kittens";
 
 const crypto = require("crypto");
@@ -10,7 +10,7 @@ const express = require("express");
 const bodyParser = require('body-parser');
 
 const PouchDB = require("pouchdb").defaults({
-  prefix: DB_DIR
+  prefix: DB_PATH
 });
 PouchDB.plugin(require('pouchdb-find'));
 
