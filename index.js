@@ -103,14 +103,13 @@ app.post("/authenticate", async (req, res, next) => {
   }
 
   let doc = result.docs[0];
-  console.log(doc);
   doc.token = false;
   await tokens.put(doc);
 
   res.json({
     ok: true,
     email: doc.email,
-    database: doc._id,
+    dbUrl: `${process.env.HOST}/db/${doc._id}/`,
     passphrase: doc.passphrase
   });
 });

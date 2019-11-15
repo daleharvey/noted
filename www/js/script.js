@@ -18,6 +18,9 @@ let writtenRevs = new Map();
 (async function() {
 
   await initDB();
+  await initUI();
+  await hashChanged();
+
   await loadUser();
 
   if (user) {
@@ -30,9 +33,6 @@ let writtenRevs = new Map();
     return;
   }
 
-  await initUI();
-  await hashChanged();
-
 })();
 
 async function log() {
@@ -41,8 +41,26 @@ async function log() {
 
 async function loadUser() {
   try {
-    user = await db.get("_local/user");
-  } catch(e) {}
+    let result = await db.get("_local/user");
+    log(`Found user: ${result.email}, validating`);
+    let testDB = new PouchDB(result.dbUrl);
+    // Make a test request to the database, if this is successful
+    // then the user has access.
+    await db.info();
+    log(`User is logged in`);
+    user = result;
+  } catch(err) {
+    if (err.status && err.name === "not_found") {
+      return;
+    }
+    // If there was an error validating the user session data then
+    // delete it.
+    log(`Error logging in`);
+    console.error(err);
+    try {
+      await db.remove(await db.get("_local/user"));
+    } catch(e) {}
+  }
 }
 
 async function initDB() {
@@ -57,8 +75,8 @@ async function initDB() {
 async function initSync(details) {
   $("#notes footer").classList.toggle("logged-in", true);
   $("#notes footer span").innerText = details.email;
-  let url = `${document.location.origin}/db/${details.database}`;
-  let remote = new PouchDB(url, {
+  log(`Initialising sync with ${details.dbUrl}`);
+  let remote = new PouchDB(details.dbUrl, {
     fetch: function (url, opts) {
       opts.headers.set('X-Auth-Token', details.passphrase);
       return PouchDB.fetch(url, opts);
