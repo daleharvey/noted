@@ -17,8 +17,8 @@ PouchDB.plugin(require('pouchdb-find'));
 const nanoid = require('nanoid');
 const nodemailer = require('nodemailer');
 
-if (!fs.existsSync(DB_DIR)){
-  fs.mkdirSync(DB_DIR);
+if (!fs.existsSync(DB_PATH)){
+  fs.mkdirSync(DB_PATH);
 }
 
 const app = express();
