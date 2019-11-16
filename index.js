@@ -140,7 +140,7 @@ app.use("/db/", async (req, res, next) => {
     }
     throw "Denied";
   } catch(e) {
-    console.error(e);
+    console.log("db request failed", e);
     res.status(403).json({
       ok: false,
       message: "Denied"

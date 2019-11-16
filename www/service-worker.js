@@ -14,7 +14,7 @@
 // Names of the two caches used in this version of the service worker.
 // Change to v2, etc. when you update any of the local resources, which will
 // in turn trigger the install event again.
-const PRECACHE = 'precache-v5';
+const PRECACHE = 'precache-v6';
 const RUNTIME = 'runtime';
 
 // A list of local resources we always want to be cached.
@@ -62,14 +62,17 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   // Ignore cross origin quests
   if (!event.request.url.startsWith(self.location.origin)) {
+    console.log("Ignoring cross origin request");
     return;
   }
 
   // Ignore database requests
   if (!event.request.url.startsWith(self.location.origin + "/db/")) {
+    console.log("Ignoring database request");
     return;
   }
 
+  console.log(`Handling fetch request for ${event.request.url}`);
   event.respondWith(
     caches.match(event.request).then(response => {
       return response || fetch(event.request);
