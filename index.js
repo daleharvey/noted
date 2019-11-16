@@ -124,6 +124,8 @@ app.use("/db/", async (req, res, next) => {
     return next();
   }
 
+  console.log(`Requesting db: ${req.path}`);
+
   try {
     let dbName = req.path.split("/")[1];
     // Reading directly from the database on every request
@@ -131,11 +133,14 @@ app.use("/db/", async (req, res, next) => {
     // this would be an easy / quick win.
     let result = await tokens.get(dbName);
     let token = req.headers["x-auth-token"] || null;
+    console.log(`With token: ${token}`);
+
     if (token && token == result.passphrase) {
       return next();
     }
     throw "Denied";
   } catch(e) {
+    console.error(e);
     res.status(403).json({
       ok: false,
       message: "Denied"
