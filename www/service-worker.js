@@ -67,7 +67,7 @@ self.addEventListener('fetch', event => {
   }
 
   // Ignore database requests
-  if (!event.request.url.startsWith(self.location.origin + "/db/")) {
+  if (!event.request.url.startsWith(self.location.origin + "db/")) {
     console.log("Ignoring database request");
     return;
   }
