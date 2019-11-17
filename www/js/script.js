@@ -17,6 +17,7 @@ let writtenRevs = new Map();
 
 (async function() {
 
+  log('Initialising ...');
   await initDB();
   await initUI();
   await hashChanged();
@@ -42,12 +43,12 @@ async function log() {
 async function loadUser() {
   try {
     let result = await db.get("_local/user");
-    log(`Found user: ${result.email}, validating`);
+    log(`Found ${result.email}, validating`);
     let testDB = new PouchDB(result.dbUrl);
     // Make a test request to the database, if this is successful
     // then the user has access.
     await db.info();
-    log(`User is logged in`);
+    log(`${result.email} logged in`);
     user = result;
   } catch(err) {
     if (err.status && err.name === "not_found") {
@@ -92,7 +93,8 @@ async function initSync(details) {
   }
 
   db.sync(remote, {
-    live: true
+    live: true,
+    retry: true,
   }).on("error", error => {
     console.error("Error Syncing", error);
   }).on("paused", () => {
