@@ -7,7 +7,7 @@ const editor = new EasyMDE({
   autoDownloadFontAwesome: false,
   toolbar: false,
   status: false,
-  element: $("#note textarea")
+  element: $("#editor")
 });
 
 let db = null;

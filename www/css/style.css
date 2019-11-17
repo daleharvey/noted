@@ -21,7 +21,7 @@ body {
 }
 
 #notes {
-  max-width: 250px;
+  width: 250px;
   background: #292929;
 }
 
@@ -129,18 +129,7 @@ body {
 }
 
 #create-note {
-  display: block;
-  cursor: pointer;
-  width: .75em;
-  height: .75em;
-  background: url(/img/create.svg) no-repeat;
-  background-size: 100%;
-  opacity: .7;
-  text-indent: -9999em;
-  border: 0;
-  color: #CCC;
-  font-size: 2em;
-  margin-right: 10px;
+  background-image: url(/img/create.svg);
 }
 
 #create-note:hover {
@@ -150,22 +139,6 @@ body {
 #header {
   display: flex;
   align-items: center;
-}
-
-#delete-note {
-  display: block;
-  cursor: pointer;
-  width: .75em;
-  height: .75em;
-  background: url(/img/delete.svg) no-repeat;
-  background-size: 100%;
-  opacity: .6;
-  text-indent: -9999em;
-  border: 0;
-  color: #CCC;
-  font-size: 2em;
-  margin-right: 10px;
-  z-index: 100;
 }
 
 .btn {
@@ -189,7 +162,11 @@ body {
   background-image: url(/img/home.svg);
 }
 
-#delete-note:hover {
+#delete-note {
+  background-image: url(/img/delete.svg);
+}
+
+.btn:hover {
   opacity: .8;
 }
 
