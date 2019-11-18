@@ -105,7 +105,7 @@ async function initSync(details) {
 }
 
 async function validate(token) {
-  let result = await fetch('/authenticate', {
+  let result = await fetch('/api/authenticate', {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({token})
@@ -114,7 +114,7 @@ async function validate(token) {
   if (json.ok) {
     json._id = "_local/user";
     await db.post(json);
-    document.location = "/";
+    document.location.href = "/";
   } else {
     console.error(json);
   }
@@ -141,7 +141,7 @@ async function signIn(e) {
   e.preventDefault();
   let email = $("#email").value
   $("#sign-in-dialog").style.display = "none";
-  let result = await fetch('/sign-in', {
+  let result = await fetch('/api/sign-in', {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({email})
