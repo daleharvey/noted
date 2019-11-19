@@ -7,8 +7,17 @@ const editor = new EasyMDE({
   autoDownloadFontAwesome: false,
   toolbar: false,
   status: false,
-  element: $("#editor")
+  element: $("#editor textarea")
 });
+
+const DEFAULT_NOTE = `## Welcome to Noted
+
+An Open Source Markdown based note taking application, works offline and syncs via PouchDB, can be installed on Desktop and Mobile by PWA supporting browsers.
+
+**Please don't depend on this service for important data, it is a side project that may disappear at any time**
+
+[Source on Github](https://github.com/daleharvey/noted)
+[Get in touch](dale@arandomurl.com)`;
 
 let db = null;
 let user = null;
@@ -128,11 +137,11 @@ async function selectNote(note) {
   document.body.classList.remove("shownotes")
 }
 
-async function createNote() {
+async function createNote(note = "") {
   let result = await db.post({
     updated: Date.now(),
     type: "post",
-    note: ""
+    note
   });
   document.location = "#" + result.id;
 }
@@ -176,7 +185,7 @@ async function hashChanged() {
       notes.rows.sort((a, b) => b.doc.updated - a.doc.updated);
       document.location = "#" + notes.rows[0].id;
     } else {
-      createNote();
+      createNote(DEFAULT_NOTE);
     }
   }
 }
@@ -188,6 +197,10 @@ async function editorChanged() {
   let update = await db.put(currentNote);
   currentNote._rev = update.rev;
   writtenRevs.set(update.rev, true);
+}
+
+function createTitle(str) {
+  return str.trim().replace(/[^a-zA-Z ]/g, "");
 }
 
 async function drawNotes() {
@@ -210,7 +223,7 @@ async function drawNotes() {
   notes.sort((a, b) => b.doc.updated - a.doc.updated);
   let titles = notes.map(note => {
     let data = note.doc.note || "";
-    let title = data.split("\n")[0].trim() || "New Note";
+    let title = createTitle(data.split("\n")[0]) || "New Note";
     let selected = "";
     if (currentNote && note.doc._id == currentNote._id) {
       selected = 'class="selected"';
@@ -258,7 +271,7 @@ async function dbUpdated(change) {
 }
 
 async function initUI() {
-  $("#create-note").addEventListener("click", createNote);
+  $("#create-note").addEventListener("click", createNote.bind(this, ""));
   $("#delete-note").addEventListener("click", deleteNote);
   $("#show-notes").addEventListener("click", toggleNotes);
   $("#cover").addEventListener("click", toggleNotes);

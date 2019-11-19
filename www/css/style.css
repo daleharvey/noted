@@ -22,10 +22,34 @@ body {
 
 #notes {
   width: 250px;
+  flex-shrink: 0;
   background: #292929;
+  border-right: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-@media screen and (max-width: 500px) {
+#editor {
+  max-width: 700px;
+  padding: 0 2em;
+  margin: 0 auto;
+}
+
+#buttons {
+  z-index: 2;
+  position: fixed;
+  display: flex;
+}
+
+#buttons .btn {
+  opacity: .2;
+}
+#buttons .btn:hover {
+  opacity: .4;
+}
+
+@media screen and (max-width: 700px) {
   #notes {
     position: absolute;
     z-index: 100;
@@ -36,10 +60,27 @@ body {
   .shownotes #notes {
     transform: translateX(0px);
   }
+
+  #buttons {
+    width: 100%;
+    bottom: 0;
+    background: rgba(0, 0, 0, .2);
+    height: 3em;
+    align-items: center;
+    padding: 0 1em;
+    justify-content: space-between;
+  }
 }
 
-@media screen and (min-width: 500px) {
+@media screen and (min-width: 700px) {
   #show-notes { display: none; }
+  #buttons {
+    height: 100%;
+    right: 0;
+    width: 2.5em;
+    padding-right: 1em;
+    margin-top: 1em;
+  }
 }
 
 #cover {
@@ -61,27 +102,8 @@ body {
   background: #2d2d2d;
   overflow: scroll;
   flex-grow: 2;
-  margin-bottom: 3em;
-}
-
-#notes {
-  border-right: 1px solid black;
   display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-#note footer {
-  z-index: 2;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  background: rgba(0, 0, 0, .2);
-  height: 3em;
-  display: flex;
-  align-items: center;
-  padding: 0 1em;
-  justify-content: space-between;
+  flex-direction: row;
 }
 
 #notes ul {
@@ -130,6 +152,7 @@ body {
 
 #create-note {
   background-image: url(/img/create.svg);
+  margin-right: 10px;
 }
 
 #create-note:hover {
@@ -154,8 +177,12 @@ body {
   border: 0;
   color: #CCC;
   font-size: 2em;
-  margin-right: 10px;
   z-index: 50;
+  transition: opacity 250ms;
+}
+
+.btn:hover {
+  opacity: .8;
 }
 
 #show-notes {
@@ -164,10 +191,6 @@ body {
 
 #delete-note {
   background-image: url(/img/delete.svg);
-}
-
-.btn:hover {
-  opacity: .8;
 }
 
 dialog {

@@ -25,7 +25,7 @@
       <ul id="notes-list">
       </ul>
 
-      <footer id="user">
+      <footer id="user" hidden>
         <a id="sign-in">Sign in to Sync</a>
         <div id="logged-in">
           <span></span> |
@@ -35,11 +35,11 @@
     </section>
 
     <div id="note">
-      <textarea id="editor" hidden></textarea>
-      <footer>
+      <div id="editor"><textarea hidden></textarea></div>
+      <div id="buttons">
         <input type="button" class="btn" id="show-notes" value="Show Notes" />
         <input type="button" class="btn" id="delete-note" value="Delete Note" />
-      </footer>
+      </div>
     </div>
 
     <div id="cover"></div>
