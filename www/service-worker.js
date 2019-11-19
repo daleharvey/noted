@@ -1,7 +1,12 @@
 "use strict";
 
+// Copied mostly from
+// https://googlechrome.github.io/samples/service-worker/basic/
+// Removed the runtime cache as I only want static assets cached
+// and used async functions
+
 // Cache name, needs updated
-const PRECACHE = 'precache-c174aa8741';
+const PRECACHE = 'precache-f1c4cf78fd';
 
 // A list of local resources we always want to be cached.
 const PRECACHE_URLS = [
@@ -29,9 +34,7 @@ const install = async () => {
 const activate = async () => {
   const keys = await caches.keys();
   const toDelete = keys.filter(name => name === PRECACHE);
-  await Promise.all(toDelete.map(cacheToDelete => {
-    return caches.delete(cacheToDelete);
-  }));
+  await Promise.all(toDelete.map(cache => caches.delete(cache)));
   await self.clients.claim();
 }
 
@@ -41,8 +44,9 @@ const handleFetch = async (event) => {
     console.log("Ignoring cross origin request");
     return;
   }
+
+  // Ignore database or api requests
   let path = event.request.url.slice(self.location.origin.length);
-  console.log("PATH IS", path)
   if (path.startsWith("/db/") || path.startsWith("/api/")) {
     console.log("Ignoring /api or /db requests");
     return;
