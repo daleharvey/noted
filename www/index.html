@@ -14,22 +14,28 @@
   <link rel="stylesheet" href="/css/simplemde-theme-dark.min.css">
 </head>
 
+<!--
+https://thenounproject.com/search/?q=sync&i=795754
+-->
+
 <body>
   <div id="wrapper">
 
     <section id="notes">
       <div id="header">
-        <input id="search" type="search" placeholder="Search" />
-        <input type="button" class="btn" id="create-note" value="Create Note" />
+        <div id="search-wrapper">
+          <input id="search" type="search" placeholder="Search Notes" />
+        </div>
+        <input type="button" class="btn" id="create-note" value="Create Note" alt="Create Note" />
       </div>
       <ul id="notes-list">
       </ul>
 
-      <footer id="user" hidden>
+      <footer id="user">
         <a id="sign-in">Sign in to Sync</a>
         <div id="logged-in">
-          <span></span> |
-          <a id="logout">logout</a>
+          <span></span>
+          <input type="button" class="btn" id="logout" />
         </div>
       </footer>
     </section>
@@ -57,20 +63,13 @@
   </script>
 
   <dialog id="sign-in-dialog">
+    <div>
     <form id="sign-in-form">
-      <p>
-        If you want to sync these notes across devices,
-        please enter your email:
-      </p>
-      <div>
-        <input type="email" id="email"
-          placeholder="Enter email address" />
-      </div>
-      <div class="buttons">
-        <input type="button" value="Cancel" id="cancel-btn" />
-        <input type="submit" value="Sign In"  id="sign-in-btn"/>
-      </div>
-    </form>
+      <p>Enter your email to sync notes</p>
+      <input type="email" id="email" placeholder="Email address" />
+      <input type="submit" value="Sign In"  id="sign-in-btn"/>
+      <input type="button" value="Cancel" class="cancel-btn" />
+    </form></div>
   </dialog>
 
 </body>

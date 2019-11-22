@@ -19,6 +19,6 @@
   "scope": "/",
   "theme_color": "#FF622E",
   "serviceworker": {
-    "src": "/js/service-worker.js"
+    "src": "/service-worker.js"
   }
 }

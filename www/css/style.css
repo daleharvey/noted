@@ -2,6 +2,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-size: 16px;
 }
 
 html, body {
@@ -12,6 +13,10 @@ body {
   background: #292929;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
   color: #999;
+}
+
+a {
+  cursor: pointer;
 }
 
 #wrapper {
@@ -28,6 +33,10 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+#notes a {
+  color: #CCC;
 }
 
 #editor {
@@ -111,48 +120,87 @@ body {
 }
 
 #notes footer {
-  cursor: pointer;
-  display: block;
-  padding: .5em;
+  border-top: 1px solid black;
   color: white;
-  font-size: .85rem;
+  align-items: center;
+  display: none;
+}
+
+#notes footer.logged-in,
+#notes footer.sign-in {
+  display: flex;
+}
+
+#sign-in {
+  display: block;
+  width: 100%;
+  padding: 1em;
 }
 
 #notes ul a {
   display: block;
   cursor: pointer;
-  color: white;
   padding: 15px;
-  border-bottom: 1px solid black;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-decoration: none;
+}
+
+#notes a {
+  transition: background-color 250ms;
+}
+
+#notes ul li {
+  border-bottom: 1px solid black;
+}
+#notes ul li:last-child {
+  border-bottom: 0;
 }
 
 #notes-list {
   flex-grow: 2;
 }
 
-#notes a.selected,
+#notes a.selected {
+  background-color: rgba(255, 255, 255, .05);
+  border-right: 5px solid #F95700FF;
+}
+
 #notes a:hover {
-  background-color: rgba(255, 255, 255, .1)
+  background-color: rgba(255, 255, 255, .05);
+}
+
+#header {
+  margin: .5em;
 }
 
 [type=search] {
   background: #1f1f1f;
-  font-size: .85rem;
-  border: 0px solid #666;
-  border-radius: 15px;
+  border-width: 0;
+  border-radius: 5px;
   color: #CCC;
-  margin: 5px 10px;
+  height: 2.5em;
+  font-size: .8em;
   padding: 5px;
   text-indent: 5px;
-  flex-grow: 1;
+  width: 100%;
+}
+
+#search-wrapper {
+  flex-grow: 2;
+}
+
+#logout {
+  background-image: url(/img/logout.svg);
+  margin: .5em;
+  flex-shrink: 0;
 }
 
 #create-note {
   background-image: url(/img/create.svg);
-  margin-right: 10px;
+  flex-shrink: 0;
+  margin-left: .5em;
 }
 
 #create-note:hover {
@@ -167,16 +215,15 @@ body {
 .btn {
   display: block;
   cursor: pointer;
-  width: .75em;
-  height: .75em;
-  background-size: 100%;
+  width: 1.5em;
+  height: 1.5em;
+  background-size: contain;
   background-repeat: no-repeat;
   background-color: transparent;
-  opacity: .6;
+  opacity: .4;
   text-indent: -9999em;
   border: 0;
   color: #CCC;
-  font-size: 2em;
   z-index: 50;
   transition: opacity 250ms;
 }
@@ -196,6 +243,7 @@ body {
 dialog {
   display: none;
   position: fixed;
+  background: rgba(0, 0, 0, .5);
   border: 0;
   top: 0;
   bottom: 0;
@@ -203,36 +251,60 @@ dialog {
   right: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, .9);
   z-index: 200;
-  color: white;
+  justify-content: center;
+  align-self: center;
 }
 
+dialog div {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  position: relative;
+}
 
 dialog form {
   max-width: 300px;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  background: #292929;
+  margin: 2em;
+  padding: 3em 1em 1em 1em;
+  box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.5);
+  color: lightgrey;
+}
+
+dialog form input {
+  color: lightgrey;
+}
+
+.cancel-btn {
+  position: absolute;
+  top: 3em;
+  right: 3em;
+  border: 0;
+  background: url(/img/cross.svg) no-repeat;
+  background-size: 1em;
+  height: 1em;
+  width: 1em;
+  text-indent: -9999em;
+  opacity: .5;
+  cursor: pointer;
 }
 
 dialog p {
-  margin: 2em 1em;
+  text-align: center;
 }
 
-form .buttons {
-  display: flex;
-  margin-top: 1em;
-}
 
-form .buttons input {
-  flex-grow: 2;
+form input[type=submit] {
   background: black;
+  border: 0;
   padding: 1em;
   font-size: 1em;
   border: 0;
-  color: white;
+  border-radius: .2em;
+  cursor: pointer;
 }
 
 input#cancel-btn {
@@ -247,18 +319,59 @@ input#sign-in-btn {
   width: 100%;
   background: transparent;
   border: 0;
-  border-bottom: 2px solid grey;
   padding: .5em;
-  color: grey;
   font-size: 1em;
+  border-bottom: 2px solid lightgrey;
+  margin: 2em 0;
 }
 
 #user #logged-in {
   display: none;
 }
 
-#user.logged-in #logged-in {
+#logged-in {
+  position: relative;
+}
+
+#logged-in span {
+  flex-grow: 2;
+  line-height: 100%;
+  font-size: .85em;
+  color: #999;
+  padding: 1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-indent: 2em;
+  background: url(/img/sync.svg) no-repeat 1em center;
+  background-size: 1.5em;
+}
+
+#logged-in span:before {
+  content: "";
   display: block;
+  background-size: .5em;
+  border-radius: 1em;
+  width: 1em;
+  height: 1em;
+  position: absolute;
+  top: 1.4em;
+  left: .7em;
+}
+
+#logged-in[data-sync-status=syncing] span:before {
+  background: green url(/img/tick.svg) no-repeat center center;
+  background-size: .5em;
+}
+
+#logged-in[data-sync-status=error] span:before {
+  background: red url(/img/cross.svg) no-repeat center center;
+  background-size: .5em;
+}
+
+#user.logged-in #logged-in {
+  display: flex;
+  width: 100%;
+  align-content: center;
 }
 #user.logged-in #sign-in {
   display: none;

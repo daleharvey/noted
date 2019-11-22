@@ -60,16 +60,22 @@ async function loadUser() {
     log(`${result.email} logged in`);
     user = result;
   } catch(err) {
-    if (err.status && err.name === "not_found") {
-      return;
+    if (!(err.status && err.name === "not_found")) {
+      // If there was an error validating the user session data then
+      // delete it.
+      log(`Error logging in`);
+      console.error(err);
+      try {
+        await db.remove(await db.get("_local/user"));
+      } catch(e) {}
     }
-    // If there was an error validating the user session data then
-    // delete it.
-    log(`Error logging in`);
-    console.error(err);
-    try {
-      await db.remove(await db.get("_local/user"));
-    } catch(e) {}
+  }
+
+  if (user) {
+    $("#notes footer").classList.toggle("logged-in", true);
+    $("#notes footer span").innerText = user.email;
+  } else {
+    $("#notes footer").classList.toggle("sign-in", true);
   }
 }
 
@@ -83,8 +89,6 @@ async function initDB() {
 }
 
 async function initSync(details) {
-  $("#notes footer").classList.toggle("logged-in", true);
-  $("#notes footer span").innerText = details.email;
   log(`Initialising sync with ${details.dbUrl}`);
   let remote = new PouchDB(details.dbUrl, {
     fetch: function (url, opts) {
@@ -106,7 +110,8 @@ async function initSync(details) {
     retry: true,
   }).on("error", error => {
     console.error("Error Syncing", error);
-  }).on("paused", () => {
+  }).on("paused", err => {
+    $("#logged-in").dataset.syncStatus = err ? "error" : "syncing";
     log("Syncing paused");
   }).on("active", () => {
     log("Syncing active");
@@ -236,8 +241,8 @@ async function drawNotes() {
 
 function showDialog(id) {
   return function() {
-    $(id).style.display = "block";
-    $("#cancel-btn").addEventListener("click", hide(id));
+    $(id).style.display = "flex";
+    $(".cancel-btn").addEventListener("click", hide(id));
     $("#sign-in-form").addEventListener("submit", signIn);
   }
 }
