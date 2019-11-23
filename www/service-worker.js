@@ -6,7 +6,7 @@
 // and used async functions
 
 // Cache name, needs updated
-const PRECACHE = 'precache-195acc3998';
+const PRECACHE = 'precache-195acc3s9';
 
 // A list of local resources we always want to be cached.
 const PRECACHE_URLS = [
@@ -41,7 +41,7 @@ const install = async () => {
 const activate = async () => {
   console.log("SW: Activating ...");
   const keys = await caches.keys();
-  const toDelete = keys.filter(name => name === PRECACHE);
+  const toDelete = keys.filter(name => name !== PRECACHE);
   await Promise.all(toDelete.map(cache => caches.delete(cache)));
   await self.clients.claim();
   console.log("SW: Done activating ...");
