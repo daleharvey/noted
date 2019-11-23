@@ -6,7 +6,7 @@
 // and used async functions
 
 // Cache name, needs updated
-const PRECACHE = 'precache-e5eb6c24be';
+const PRECACHE = 'precache-195acc3998';
 
 // A list of local resources we always want to be cached.
 const PRECACHE_URLS = [
@@ -31,33 +31,37 @@ const PRECACHE_URLS = [
 ];
 
 const install = async () => {
+  console.log("SW: Installing ...");
   const cache = await caches.open(PRECACHE);
-  return cache.addAll(PRECACHE_URLS);
-  self.skipWaiting()
+  await cache.addAll(PRECACHE_URLS);
+  await self.skipWaiting()
+  console.log("SW: Done installing ...");
 }
 
 const activate = async () => {
+  console.log("SW: Activating ...");
   const keys = await caches.keys();
   const toDelete = keys.filter(name => name === PRECACHE);
   await Promise.all(toDelete.map(cache => caches.delete(cache)));
   await self.clients.claim();
+  console.log("SW: Done activating ...");
 }
 
 const handleFetch = async (event) => {
   // Ignore cross origin quests
   if (!event.request.url.startsWith(self.location.origin)) {
-    console.log("Ignoring cross origin request");
+    console.log("SW: Ignoring cross origin request");
     return;
   }
 
   // Ignore database or api requests
   let path = event.request.url.slice(self.location.origin.length);
   if (path.startsWith("/db/") || path.startsWith("/api/")) {
-    console.log("Ignoring /api or /db requests");
+    console.log("SW: Ignoring /api or /db requests");
     return;
   }
 
-  console.log(`Handling fetch request for ${path}`);
+  console.log(`SW: Handling fetch request for ${path}`);
   event.respondWith(
     caches.match(event.request).then(response => {
       return response || fetch(event.request);
