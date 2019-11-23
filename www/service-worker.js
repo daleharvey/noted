@@ -6,7 +6,7 @@
 // and used async functions
 
 // Cache name, needs updated
-const PRECACHE = 'precache-acf6e218c3';
+const PRECACHE = 'precache-e5eb6c24be';
 
 // A list of local resources we always want to be cached.
 const PRECACHE_URLS = [
@@ -33,6 +33,7 @@ const PRECACHE_URLS = [
 const install = async () => {
   const cache = await caches.open(PRECACHE);
   return cache.addAll(PRECACHE_URLS);
+  self.skipWaiting()
 }
 
 const activate = async () => {

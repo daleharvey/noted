@@ -17,7 +17,7 @@
   "background_color": "#292929",
   "display": "standalone",
   "scope": "/",
-  "theme_color": "#FF622E",
+  "theme_color": "#292929",
   "serviceworker": {
     "src": "/service-worker.js"
   }

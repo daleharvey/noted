@@ -79,10 +79,15 @@ a {
     padding: 0 1em;
     justify-content: space-between;
   }
+  #editor {
+    padding: 0;
+  }
 }
 
 @media screen and (min-width: 700px) {
-  #show-notes { display: none; }
+  #show-notes {
+    display: none;
+  }
   #buttons {
     height: 100%;
     right: 0;
