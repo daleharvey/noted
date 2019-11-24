@@ -6,7 +6,7 @@
 // and used async functions
 
 // Cache name, needs updated
-const PRECACHE = 'precache-29ce590d95';
+const PRECACHE = 'precache-e9db1f439f';
 
 // A list of local resources we always want to be cached.
 const PRECACHE_URLS = [
@@ -16,6 +16,7 @@ const PRECACHE_URLS = [
   "/img/create.svg",
   "/img/cross.svg",
   "/img/delete.svg",
+  "/img/favicon.png",
   "/img/home.svg",
   "/img/icon-192.png",
   "/img/icon-512.png",
