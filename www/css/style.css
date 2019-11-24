@@ -73,14 +73,23 @@ a {
   #buttons {
     width: 100%;
     bottom: 0;
-    background: rgba(0, 0, 0, .2);
+    background: rgba(36, 36, 36);
     height: 3em;
     align-items: center;
     padding: 0 1em;
     justify-content: space-between;
   }
+
   #editor {
     padding: 0;
+  }
+
+  .CodeMirror {
+    margin-bottom: 2.5em;
+  }
+
+  #buttons .btn {
+    opacity: .5;
   }
 }
 
@@ -165,6 +174,12 @@ a {
 
 #notes-list {
   flex-grow: 2;
+  overflow-y: scroll;
+}
+
+.error {
+  padding: 1em;
+  text-align: center;
 }
 
 #notes a.selected {
@@ -301,7 +316,6 @@ dialog p {
   text-align: center;
 }
 
-
 form input[type=submit] {
   background: black;
   border: 0;
@@ -317,6 +331,10 @@ input#cancel-btn {
 }
 input#sign-in-btn {
   background: green;
+}
+
+#sign-in {
+  background-color: rgba(0,0,0,.2);
 }
 
 #email {

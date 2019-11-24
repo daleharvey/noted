@@ -221,7 +221,7 @@ async function drawNotes() {
   }
 
   if (!notes.length && search) {
-    $("#notes-list").innerHTML = "Nothing matched the search";
+    $("#notes-list").innerHTML = "<li class=error>No results found</li>";
     return;
   }
 
