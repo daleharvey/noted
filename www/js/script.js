@@ -197,13 +197,17 @@ async function hashChanged() {
 async function editorChanged() {
   currentNote.delta = editor.getContents();
   currentNote.updated = Date.now();
+  // Storing the full html to get search working for now.
+  currentNote.html = editor.root.innerHTML;
+  currentNote.title = createTitle(currentNote.html.split("\n")[0]);
+  console.log(currentNote);
   let update = await db.put(currentNote);
   currentNote._rev = update.rev;
   writtenRevs.set(update.rev, true);
 }
 
 function createTitle(str) {
-  return str.trim().replace(/[^a-zA-Z ]/g, "");
+  return str.trim().replace(/[^a-z\-A-Z ]/g, "");
 }
 
 async function drawNotes() {
@@ -214,7 +218,7 @@ async function drawNotes() {
   if (search) {
     notes = notes.filter((value) => {
       // Only do full text filter right now
-      return value.doc.note.includes(search);
+      return value.doc.html && value.doc.html.includes(search);
     });
   }
 
@@ -226,7 +230,7 @@ async function drawNotes() {
   notes.sort((a, b) => b.doc.updated - a.doc.updated);
   let titles = notes.map(note => {
     let data = note.doc.note || "";
-    let title = createTitle(data.split("\n")[0]) || "New Note";
+    let title = note.doc.title || "New Note";
     let selected = "";
     if (currentNote && note.doc._id == currentNote._id) {
       selected = 'class="selected"';
