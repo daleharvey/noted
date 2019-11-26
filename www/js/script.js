@@ -3,16 +3,11 @@
 const $ = document.querySelector.bind(document);
 const changeEvent = debounce(editorChanged, 500);
 
-const editor = new EasyMDE({
-  autoDownloadFontAwesome: false,
-  toolbar: false,
-  status: false,
-  element: $("#editor textarea")
-});
+const editor = new Quill("#editor div", {theme: 'bubble'});
 
 const DEFAULT_NOTE = `## Welcome to Noted
 
-An Open Source Markdown based note taking application, works offline and syncs via PouchDB, can be installed on Desktop and Mobile by PWA supporting browsers.
+An Open Source note taking application, works offline and syncs via PouchDB, can be installed on Desktop and Mobile by PWA supporting browsers.
 
 **Please don't depend on this service for important data, it is a side project that may disappear at any time**
 
@@ -135,10 +130,14 @@ async function validate(token) {
 }
 
 async function selectNote(note) {
-  editor.codemirror.off("change", changeEvent);
+  editor.off("text-change", changeEvent);
   currentNote = note;
-  editor.value(note.note);
-  editor.codemirror.on("change", changeEvent);
+  if ("delta" in note) {
+    editor.setContents(note.delta);
+  } else if ("note" in note) {
+    editor.setText(note.note);
+  }
+  editor.on("text-change", changeEvent);
   document.body.classList.remove("shownotes")
 }
 
@@ -196,8 +195,7 @@ async function hashChanged() {
 }
 
 async function editorChanged() {
-  let data = editor.value();
-  currentNote.note = data;
+  currentNote.delta = editor.getContents();
   currentNote.updated = Date.now();
   let update = await db.put(currentNote);
   currentNote._rev = update.rev;

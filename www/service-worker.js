@@ -6,12 +6,12 @@
 // and used async functions
 
 // Cache name, needs updated
-const PRECACHE = 'precache-e9db1f439f';
+const PRECACHE = 'precache-4084875956';
 
 // A list of local resources we always want to be cached.
 const PRECACHE_URLS = [
   "/", // Alias for index.html
-  "/css/simplemde-theme-dark.min.css",
+  "/css/quill.bubble.css",
   "/css/style.css",
   "/img/create.svg",
   "/img/cross.svg",
@@ -24,8 +24,8 @@ const PRECACHE_URLS = [
   "/img/sync.svg",
   "/img/tick.svg",
   "/index.html",
-  "/js/easymde.min.js",
   "/js/pouchdb.min.js",
+  "/js/quill.min.js",
   "/js/script.js",
   "/manifest.json",
   "/service-worker.js",
