@@ -198,7 +198,7 @@ async function editorChanged() {
   currentNote.delta = editor.getContents();
   currentNote.updated = Date.now();
   // Storing the full html to get search working for now.
-  currentNote.html = editor.root.innerHTML;
+  currentNote.html = editor.root.innerText;
   currentNote.title = createTitle(currentNote.html.split("\n")[0]);
   console.log(currentNote);
   let update = await db.put(currentNote);
