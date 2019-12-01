@@ -6,7 +6,7 @@
 // and used async functions
 
 // Cache name, needs updated
-const PRECACHE = 'precache-6361ad73f0';
+const PRECACHE = 'precache-2b8953565f';
 
 // A list of local resources we always want to be cached.
 const PRECACHE_URLS = [
@@ -26,6 +26,7 @@ const PRECACHE_URLS = [
   "/index.html",
   "/js/pouchdb.min.js",
   "/js/quill.min.js",
+  "/js/quill.min.js.map",
   "/js/script.js",
   "/manifest.json",
   "/service-worker.js",

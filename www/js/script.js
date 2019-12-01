@@ -200,7 +200,6 @@ async function editorChanged() {
   // Storing the full html to get search working for now.
   currentNote.html = editor.root.innerText;
   currentNote.title = createTitle(currentNote.html.split("\n")[0]);
-  console.log(currentNote);
   let update = await db.put(currentNote);
   currentNote._rev = update.rev;
   writtenRevs.set(update.rev, true);
