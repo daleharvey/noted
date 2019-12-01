@@ -276,6 +276,15 @@ async function dbUpdated(change) {
   }
 }
 
+async function editorClicked(event) {
+  // Centering the editor gives blank margins at the edges, its
+  // hard to tell when the editor is so forward clicks in those
+  // margins to focus the editor.
+  if (event.target.id === "note" && !editor.hasFocus()) {
+    editor.focus();
+  }
+}
+
 async function initUI() {
   $("#create-note").addEventListener("click", createNote.bind(this, ""));
   $("#delete-note").addEventListener("click", deleteNote);
@@ -284,6 +293,8 @@ async function initUI() {
   $("#logout").addEventListener("click", logout);
   $("#sign-in").addEventListener("click",
     showDialog("#sign-in-dialog"));
+  $("body").addEventListener("click",
+    editorClicked);
 
   window.addEventListener('hashchange', hashChanged, false);
 
