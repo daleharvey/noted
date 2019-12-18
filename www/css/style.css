@@ -86,8 +86,8 @@ a {
     padding: 0;
   }
 
-  .CodeMirror {
-    margin-bottom: 2.5em;
+  #editor {
+    margin-bottom: 3em;
   }
 
   #buttons .btn {

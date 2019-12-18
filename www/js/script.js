@@ -4,6 +4,7 @@ const $ = document.querySelector.bind(document);
 const changeEvent = debounce(editorChanged, 500);
 
 const editor = new Quill("#editor div", {theme: 'bubble'});
+const quill = editor;
 
 const DEFAULT_NOTE = `## Welcome to Noted
 
@@ -319,3 +320,58 @@ function debounce(func, wait, immediate) {
 		if (callNow) func.apply(context, args);
 	};
 };
+
+// Found the code below @ https://github.com/quilljs/quill/issues/109
+// Put the below somewhere with access to Quill
+const urlPatterns = [/https?:\/\/[^\s]+/, /www\.[^\s]+/];
+
+// Typing space after a URL matching these formats will turn it into a link
+for (const baseUrlPattern of urlPatterns) {
+  const urlPattern = new RegExp(`${baseUrlPattern.source}$`);
+  quill.keyboard.addBinding({
+    collapsed: true,
+    key: ' ',
+    prefix: urlPattern,
+    handler: createUrlKeyboardHandler(urlPattern, quill),
+  });
+}
+
+// Pasting URLs adds a link
+quill.clipboard.addMatcher(Node.TEXT_NODE, (node, delta) => {
+  const combinedPattern = urlPatterns
+     .map(pattern => `(${pattern.source})`)
+     .join('|');
+  const combinedRegexp = new RegExp(combinedPattern, 'g');
+
+  const ops = [];
+  const str = node.data;
+  let lastMatchEndIndex = 0;
+  let match = combinedRegexp.exec(str);
+  while (match !== null) {
+    if (match.index > lastMatchEndIndex) {
+      ops.push({ insert: str.slice(lastMatchEndIndex, match.index) });
+    }
+    ops.push({ insert: match[0], attributes: { link: match[0] } });
+    lastMatchEndIndex = match.index + match[0].length;
+    match = combinedRegexp.exec(str);
+  }
+
+  if (lastMatchEndIndex < str.length) {
+    ops.push({ insert: str.slice(lastMatchEndIndex) });
+  }
+
+  delta.ops = ops;
+  return delta;
+ });
+
+ function createUrlKeyboardHandler(urlRegexp, quill) {
+  return (range, context) => {
+    const prefixMatch = context.prefix.match(urlRegexp);
+    if (prefixMatch === null) return true;
+    const prefixLength = prefixMatch[0].length;
+    const prefixStart = range.index - prefixLength;
+    const url = quill.getText(prefixStart, prefixLength);
+    quill.formatText(prefixStart, prefixLength, { link: url }, 'user');
+    return true;
+  };
+}
