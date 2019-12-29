@@ -20,6 +20,24 @@ a {
   color: #F95700FF;
 }
 
+#note ul {
+  padding-left: 0 !important;
+  list-style: none;
+}
+
+#note li {
+  padding-left: 0 !important;
+}
+
+#note ul li::before {
+  content: "\2022";
+  color: #F95700FF;
+  font-weight: bold;
+  display: inline-block;
+  width: .5em;
+  margin-left: .5em;
+}
+
 #wrapper {
   display: flex;
   width: 100%;
