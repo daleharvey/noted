@@ -20,6 +20,11 @@ a {
   color: #F95700FF;
 }
 
+h1, h2 {
+  color: #DDD;
+  font-weight: normal;
+}
+
 #note ul {
   padding-left: 0 !important;
   list-style: none;
@@ -104,7 +109,7 @@ a {
     padding: 0;
   }
 
-  #editor {
+  #note {
     margin-bottom: 3em;
   }
 
@@ -423,4 +428,8 @@ input#sign-in-btn {
 .CodeMirror {
   background: #2d2d2d !important;
   border: 0 !important;
+}
+
+.ql-editor {
+  overflow-y: visible !important;
 }
