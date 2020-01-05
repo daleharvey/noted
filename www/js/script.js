@@ -6,14 +6,14 @@ const changeEvent = debounce(editorChanged, 500);
 const editor = new Quill("#editor div", {theme: 'bubble'});
 const quill = editor;
 
-const DEFAULT_NOTE = `## Welcome to Noted
+const DEFAULT_NOTE = `<h1>Welcome to Noted</h1>
+<p>An Open Source note taking application, works offline and syncs via PouchDB, can be installed on Desktop and Mobile by PWA supporting browsers.</p>
+<p><strong>Please don't depend on this service for important data, it is a side project that may disappear at any time</strong></p>
+<ul>
+  <li><a href="https://github.com/daleharvey/noted">Source on Github</a></li>
+  <li><a href="mailto://dale@arandomurl.com">Email</a> | <a href="https://twitter.com/daleharvey">Twitter</a></li></ul>
 
-An Open Source note taking application, works offline and syncs via PouchDB, can be installed on Desktop and Mobile by PWA supporting browsers.
-
-**Please don't depend on this service for important data, it is a side project that may disappear at any time**
-
-[Source on Github](https://github.com/daleharvey/noted)
-[Get in touch](dale@arandomurl.com)`;
+`;
 
 let db = null;
 let user = null;
@@ -136,7 +136,7 @@ async function selectNote(note) {
   if ("delta" in note) {
     editor.setContents(note.delta);
   } else if ("note" in note) {
-    editor.setText(note.note);
+    editor.clipboard.dangerouslyPasteHTML(0, note.note)
   }
   editor.on("text-change", changeEvent);
   document.body.classList.remove("shownotes")
@@ -148,6 +148,7 @@ async function createNote(note = "") {
     type: "post",
     note
   });
+  writtenRevs.set(result.rev, true);
   document.location = "#" + result.id;
 }
 
@@ -190,7 +191,7 @@ async function hashChanged() {
       notes.rows.sort((a, b) => b.doc.updated - a.doc.updated);
       document.location = "#" + notes.rows[0].id;
     } else {
-      createNote(DEFAULT_NOTE);
+      await createNote(DEFAULT_NOTE);
     }
   }
 }
